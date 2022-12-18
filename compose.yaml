@@ -1,0 +1,46 @@
+{
+   "services": {
+      "db": {
+         "environment": {
+            "POSTGRES_DB": "garmin",
+            "POSTGRES_PASSWORD": "garmin",
+            "POSTGRES_USER": "garmin"
+         },
+         "image": "docker.io/library/postgres",
+         "ports": [
+            "${POSTGRES_PORT:-5432}:5432"
+         ],
+         "restart": "always",
+         "volumes": [
+            "/home/jdb/garmin:/var/lib/postgresql/data:z"
+         ]
+      },
+      "grafana": {
+         "depends_on": [
+            "db"
+         ],
+         "entrypoint": [
+            "sh",
+            "-euc",
+            "printf \"\"apiVersion\": 1\n\"datasources\":\n- \"database\": \"garmin\"\n  \"isDefault\": true\n  \"jsonData\":\n    \"sslmode\": \"disable\"\n  \"name\": \"garmin\"\n  \"secureJsonData\":\n    \"password\": \"garmin\"\n  \"type\": \"postgres\"\n  \"url\": \"db\"\n  \"user\": \"garmin\"\" > /etc/grafana/provisioning/datasources/garmin.yml\nexec /run.sh\n"
+         ],
+         "environment": [
+            "GF_AUTH_ANONYMOUS_ENABLED=true",
+            "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin",
+            "GF_DATABASE_TYPE=postgres",
+            "GF_DATABASE_HOST=db",
+            "GF_DATABASE_USER=garmin",
+            "GF_DATABASE_PASSWORD=garmin",
+            "GF_DATABASE_SSL_MODE=disable",
+            "GF_INSTALL_PLUGINS=pr0ps-trackmap-panel",
+            "GF_PLUGINS_PLUGIN_ADMIN_ENABLED=true"
+         ],
+         "image": "docker.io/grafana/grafana",
+         "ports": [
+            "${GRAFANA_PORT:-3000}:3000"
+         ],
+         "restart": "always"
+      }
+   },
+   "version": "3.1"
+}

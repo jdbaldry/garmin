@@ -1,0 +1,17 @@
+{
+  "linters-settings": {
+    "gci": {
+      "sections": [
+        "standard",
+        "default",
+        "prefix(jdb.sh/garmin)"
+      ]
+    },
+    "varnamelen": {
+      "ignore-decls": [
+        "id int64",
+        "db *sql.DB"
+      ]
+    }
+  }
+}
