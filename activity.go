@@ -11,8 +11,11 @@ import (
 
 	log "github.com/golang/glog"
 	"github.com/tormoder/fit"
+
 	"jdb.sh/garmin/postgresql"
 )
+
+var errNotActivity = errors.New("not an activity")
 
 func createActivityParams(activity *fit.ActivityMsg) postgresql.CreateActivityParams {
 	return postgresql.CreateActivityParams{
@@ -94,6 +97,65 @@ func createActivityRecordParams(activityID int64, record *fit.RecordMsg) postgre
 	}
 }
 
+func ingestActivity(ctx context.Context, queries *postgresql.Queries, data *fit.File) error {
+	activityFile, err := data.Activity()
+	if err != nil {
+		return errNotActivity
+	}
+
+	params := createActivityParams(activityFile.Activity)
+	log.Infof("Creating activity with params: %+v", params)
+
+	id, err := queries.CreateActivity(ctx, params)
+	if err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("failed to create activity: %w", err)
+		}
+	}
+
+	if id == 0 { // No row inserted, skip inserting related tables.
+		return nil
+	}
+
+	for i, session := range activityFile.Sessions {
+		params := createActivitySessionParams(id, session)
+		log.V(1).Infof("Creating session %d for activity %d with params: %+v", i, id, params)
+
+		_, err := queries.CreateActivitySession(ctx, params)
+		if err != nil {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return fmt.Errorf("failed to create session: %w", err)
+			}
+		}
+	}
+
+	for i, lap := range activityFile.Laps {
+		params := createActivityLapParams(id, lap)
+		log.V(1).Infof("Creating lap %d for activity %d with params: %+v", i, id, params)
+
+		_, err := queries.CreateActivityLap(ctx, params)
+		if err != nil {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return fmt.Errorf("failed to create lap: %w", err)
+			}
+		}
+	}
+
+	for i, record := range activityFile.Records {
+		params := createActivityRecordParams(id, record)
+		log.V(2).Infof("Creating record %d for activity %d with params: %+v", i, id, params)
+
+		_, err := queries.CreateActivityRecord(ctx, params)
+		if err != nil {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return fmt.Errorf("failed to create record: %w", err)
+			}
+		}
+	}
+
+	return nil
+}
+
 func ingestActivities(ctx context.Context, queries *postgresql.Queries) error {
 	return filepath.WalkDir(filepath.Join(fitDir, "Activity"), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -109,61 +171,6 @@ func ingestActivities(ctx context.Context, queries *postgresql.Queries) error {
 			return err
 		}
 
-		activityFile, err := data.Activity()
-		if err != nil {
-			return fmt.Errorf("FIT data in file %s was not an activity: %w", path, err)
-		}
-
-		params := createActivityParams(activityFile.Activity)
-		log.Infof("Creating activity with params: %+v", params)
-
-		id, err := queries.CreateActivity(ctx, params)
-		if err != nil {
-			if !errors.Is(err, sql.ErrNoRows) {
-				return fmt.Errorf("failed to create activity: %w", err)
-			}
-		}
-
-		if id == 0 { // No row inserted, skip inserting related tables.
-			return nil
-		}
-
-		for i, session := range activityFile.Sessions {
-			params := createActivitySessionParams(id, session)
-			log.V(1).Infof("Creating session %d for activity %d with params: %+v", i, id, params)
-
-			_, err := queries.CreateActivitySession(ctx, params)
-			if err != nil {
-				if !errors.Is(err, sql.ErrNoRows) {
-					return fmt.Errorf("failed to create session: %w", err)
-				}
-			}
-		}
-
-		for i, lap := range activityFile.Laps {
-			params := createActivityLapParams(id, lap)
-			log.V(1).Infof("Creating lap %d for activity %d with params: %+v", i, id, params)
-
-			_, err := queries.CreateActivityLap(ctx, params)
-			if err != nil {
-				if !errors.Is(err, sql.ErrNoRows) {
-					return fmt.Errorf("failed to create lap: %w", err)
-				}
-			}
-		}
-
-		for i, record := range activityFile.Records {
-			params := createActivityRecordParams(id, record)
-			log.V(2).Infof("Creating record %d for activity %d with params: %+v", i, id, params)
-
-			_, err := queries.CreateActivityRecord(ctx, params)
-			if err != nil {
-				if !errors.Is(err, sql.ErrNoRows) {
-					return fmt.Errorf("failed to create record: %w", err)
-				}
-			}
-		}
-
-		return nil
+		return ingestActivity(ctx, queries, data)
 	})
 }

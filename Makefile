@@ -11,7 +11,7 @@ help: ## Display this help.
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-45s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-GO_FILES := main.go
+GO_FILES := main.go activity.go ingest.go sleep.go
 
 .PHONY: fmt
 fmt: ## Format all code.
@@ -73,6 +73,7 @@ generate: postgresql/query.sql.go
 .PHONY: compose
 compose: ## Run container environment.
 compose: compose.yaml
+	podman-compose down
 	podman-compose up -d
 
 RELEASE := 21.94.00
