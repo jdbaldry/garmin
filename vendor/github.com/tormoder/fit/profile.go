@@ -471,8 +471,9 @@ var _fields = [...][256]*field{
 		126: {86, 126, types.Fit(6), 1},
 		127: {87, 127, types.Fit(6), 1},
 		128: {88, 128, types.Fit(6), 1},
-		137: {89, 137, types.Fit(2), 1},
-		139: {90, 139, types.Fit(4), 1},
+		132: {89, 132, types.Fit(4), 1},
+		137: {90, 137, types.Fit(2), 1},
+		139: {91, 139, types.Fit(4), 1},
 	},
 
 	MesgNumLap: {
@@ -558,7 +559,8 @@ var _fields = [...][256]*field{
 		112: {79, 112, types.Fit(6), 1},
 		113: {80, 113, types.Fit(6), 1},
 		114: {81, 114, types.Fit(6), 1},
-		121: {82, 121, types.Fit(4), 1},
+		118: {82, 118, types.Fit(4), 1},
+		121: {83, 121, types.Fit(4), 1},
 	},
 
 	MesgNumLength: {
@@ -631,6 +633,7 @@ var _fields = [...][256]*field{
 		62:  {45, 62, types.Fit(2), 1},
 		73:  {46, 73, types.Fit(6), 1},
 		78:  {47, 78, types.Fit(6), 1},
+		83:  {48, 83, types.Fit(4), 1},
 	},
 
 	MesgNumEvent: {

@@ -1036,6 +1036,7 @@ type SessionMsg struct {
 	EnhancedAvgAltitude          uint32
 	EnhancedMinAltitude          uint32
 	EnhancedMaxAltitude          uint32
+	AvgVerticalRatio             uint16
 	TotalAnaerobicTrainingEffect uint8
 	AvgVam                       uint16
 }
@@ -1133,6 +1134,7 @@ func NewSessionMsg() *SessionMsg {
 		EnhancedAvgAltitude:          0xFFFFFFFF,
 		EnhancedMinAltitude:          0xFFFFFFFF,
 		EnhancedMaxAltitude:          0xFFFFFFFF,
+		AvgVerticalRatio:             0xFFFF,
 		TotalAnaerobicTrainingEffect: 0xFF,
 		AvgVam:                       0xFFFF,
 	}
@@ -1611,6 +1613,17 @@ func (x *SessionMsg) GetEnhancedMaxAltitudeScaled() float64 {
 	return float64(x.EnhancedMaxAltitude)/5 - 500
 }
 
+// GetAvgVerticalRatioScaled returns AvgVerticalRatio
+// with scale and any offset applied. NaN is returned if the
+// field has an invalid value (i.e. has not been set).
+// Units: percent
+func (x *SessionMsg) GetAvgVerticalRatioScaled() float64 {
+	if x.AvgVerticalRatio == 0xFFFF {
+		return math.NaN()
+	}
+	return float64(x.AvgVerticalRatio) / 100
+}
+
 // GetTotalAnaerobicTrainingEffectScaled returns TotalAnaerobicTrainingEffect
 // with scale and any offset applied. NaN is returned if the
 // field has an invalid value (i.e. has not been set).
@@ -1785,6 +1798,7 @@ type LapMsg struct {
 	EnhancedAvgAltitude           uint32
 	EnhancedMinAltitude           uint32
 	EnhancedMaxAltitude           uint32
+	AvgVerticalRatio              uint16
 	AvgVam                        uint16
 }
 
@@ -1874,6 +1888,7 @@ func NewLapMsg() *LapMsg {
 		EnhancedAvgAltitude:           0xFFFFFFFF,
 		EnhancedMinAltitude:           0xFFFFFFFF,
 		EnhancedMaxAltitude:           0xFFFFFFFF,
+		AvgVerticalRatio:              0xFFFF,
 		AvgVam:                        0xFFFF,
 	}
 }
@@ -2348,6 +2363,17 @@ func (x *LapMsg) GetEnhancedMaxAltitudeScaled() float64 {
 	return float64(x.EnhancedMaxAltitude)/5 - 500
 }
 
+// GetAvgVerticalRatioScaled returns AvgVerticalRatio
+// with scale and any offset applied. NaN is returned if the
+// field has an invalid value (i.e. has not been set).
+// Units: percent
+func (x *LapMsg) GetAvgVerticalRatioScaled() float64 {
+	if x.AvgVerticalRatio == 0xFFFF {
+		return math.NaN()
+	}
+	return float64(x.AvgVerticalRatio) / 100
+}
+
 // GetAvgVamScaled returns AvgVam
 // with scale and any offset applied. NaN is returned if the
 // field has an invalid value (i.e. has not been set).
@@ -2558,6 +2584,7 @@ type RecordMsg struct {
 	DeviceIndex                   DeviceIndex
 	EnhancedSpeed                 uint32
 	EnhancedAltitude              uint32
+	VerticalRatio                 uint16
 }
 
 // NewRecordMsg returns a record FIT message
@@ -2612,6 +2639,7 @@ func NewRecordMsg() *RecordMsg {
 		DeviceIndex:                   0xFF,
 		EnhancedSpeed:                 0xFFFFFFFF,
 		EnhancedAltitude:              0xFFFFFFFF,
+		VerticalRatio:                 0xFFFF,
 	}
 }
 
@@ -2924,6 +2952,17 @@ func (x *RecordMsg) GetEnhancedAltitudeScaled() float64 {
 		return math.NaN()
 	}
 	return float64(x.EnhancedAltitude)/5 - 500
+}
+
+// GetVerticalRatioScaled returns VerticalRatio
+// with scale and any offset applied. NaN is returned if the
+// field has an invalid value (i.e. has not been set).
+// Units: percent
+func (x *RecordMsg) GetVerticalRatioScaled() float64 {
+	if x.VerticalRatio == 0xFFFF {
+		return math.NaN()
+	}
+	return float64(x.VerticalRatio) / 100
 }
 
 // GetSpeedFromCompressedSpeedDistance returns
