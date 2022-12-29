@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS activities (
     event_type smallint,
     local_ts timestamp,
     event_group smallint,
+    source varchar,
     UNIQUE (event, start_ts, end_ts)
 );
 
@@ -112,19 +113,37 @@ CREATE TABLE IF NOT EXISTS sleeps (
   id bigserial PRIMARY KEY,
   start_ts timestamp,
   end_ts timestamp,
-  total_sleep double precision,
-  deep_sleep double precision,
-  light_sleep double precision,
-  rem_sleep double precision,
-  awake double precision,
-  avg_spo2 double precision,
-  avg_rr double precision,
-  avg_stress double precision,
-  score integer,
-  qualifier varchar
+  UNIQUE (start_ts, end_ts)
+);
+
+CREATE TABLE IF NOT EXISTS sleep_records (
+  id bigserial PRIMARY KEY,
+  sleep bigint REFERENCES sleeps(id),
+  start_ts timestamp,
+  end_ts timestamp,
+  sleep_activity_level smallint REFERENCES sleep_activity_levels(id)
 );
 
 CREATE TABLE IF NOT EXISTS sleep_activity_levels (
   id smallint PRIMARY KEY,
   name varchar
-)
+);
+
+CREATE TABLE IF NOT EXISTS metadata (
+  id bigserial PRIMARY KEY,
+  name varchar
+);
+
+CREATE TABLE IF NOT EXISTS activity_sessions_metadata (
+  id bigserial PRIMARY KEY,
+  activity_session bigint REFERENCES activity_sessions(id),
+  kind bigint REFERENCES metadata(id),
+  value varchar,
+  UNIQUE (activity_session, kind, value)
+);
+
+CREATE TABLE IF NOT EXISTS dashboards (
+  sport bigint REFERENCES sports(id),
+  uid varchar,
+  title varchar
+);

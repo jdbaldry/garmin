@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/golang/glog v1.0.0
 	github.com/lib/pq v1.10.7
-	github.com/mattn/go-sqlite3 v1.14.16
+	github.com/tormoder/fit v0.14.0
 )
 
 require (
@@ -15,7 +15,6 @@ require (
 	github.com/gordonklaus/ineffassign v0.0.0-20210914165742-4cc7213b9bc8 // indirect
 	github.com/kisielk/errcheck v1.6.1 // indirect
 	github.com/mdempsky/unconvert v0.0.0-20200228143138-95ecdbfc0b5f // indirect
-	github.com/tormoder/fit v0.14.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220218215828-6cf2b201936e // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect

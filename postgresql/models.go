@@ -19,6 +19,7 @@ type Activity struct {
 	EventType      sql.NullInt16
 	LocalTs        sql.NullTime
 	EventGroup     sql.NullInt16
+	Source         sql.NullString
 }
 
 type ActivityLap struct {
@@ -79,6 +80,24 @@ type ActivitySession struct {
 	MaxHeartRate     sql.NullInt16
 }
 
+type ActivitySessionsMetadatum struct {
+	ID              int64
+	ActivitySession sql.NullInt64
+	Kind            sql.NullInt64
+	Value           sql.NullString
+}
+
+type Dashboard struct {
+	Sport sql.NullInt64
+	Uid   sql.NullString
+	Title sql.NullString
+}
+
+type Metadatum struct {
+	ID   int64
+	Name sql.NullString
+}
+
 type Monitoring struct {
 	ID              int64
 	Ts              sql.NullTime
@@ -98,24 +117,22 @@ type Record struct {
 }
 
 type Sleep struct {
-	ID         int64
-	StartTs    sql.NullTime
-	EndTs      sql.NullTime
-	TotalSleep sql.NullFloat64
-	DeepSleep  sql.NullFloat64
-	LightSleep sql.NullFloat64
-	RemSleep   sql.NullFloat64
-	Awake      sql.NullFloat64
-	AvgSpo2    sql.NullFloat64
-	AvgRr      sql.NullFloat64
-	AvgStress  sql.NullFloat64
-	Score      sql.NullInt32
-	Qualifier  sql.NullString
+	ID      int64
+	StartTs sql.NullTime
+	EndTs   sql.NullTime
 }
 
 type SleepActivityLevel struct {
 	ID   int16
 	Name sql.NullString
+}
+
+type SleepRecord struct {
+	ID                 int64
+	Sleep              sql.NullInt64
+	StartTs            sql.NullTime
+	EndTs              sql.NullTime
+	SleepActivityLevel sql.NullInt16
 }
 
 type Sport struct {

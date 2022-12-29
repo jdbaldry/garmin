@@ -8,9 +8,10 @@ INSERT INTO activities (
     event,
     event_type,
     local_ts,
-    event_group
+    event_group,
+    source
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 ON CONFLICT DO NOTHING
 RETURNING id;
 
@@ -158,6 +159,7 @@ VALUES
 (46, 'Jumpmaster'),
 (47, 'Sport boxing'),
 (48, 'Floor climbing'),
+(49, 'Sleep'),
 (53, 'Diving'),
 (254, 'All'),
 (255, 'Invalid')
@@ -238,9 +240,60 @@ ON CONFLICT DO NOTHING;
 -- name: PopulateSleepActivityLevels :exec
 INSERT INTO sleep_activity_levels (id, name)
 VALUES
-  (0, 'unmeasurable'),
-  (1, 'deep'),
-  (2, 'light'),
-  (3, 'REM'),
-  (3, 'awake'),
-  (4, 'more awake');
+  (0, 'Unmeasurable'),
+  (1, 'Awake'),
+  (2, 'Light'),
+  (3, 'Deep'),
+  (4, 'REM')
+ON CONFLICT DO NOTHING;
+
+-- name: CreateSleep :one
+INSERT INTO sleeps (
+  start_ts,
+  end_ts
+)
+VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id;
+
+-- name: CreateSleepRecord :one
+INSERT INTO sleep_records (
+  sleep,
+  start_ts,
+  end_ts,
+  sleep_activity_level
+)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT DO NOTHING
+RETURNING id;
+
+-- name: PopulateMetadata :exec
+INSERT INTO metadata (id, name)
+VALUES
+  (1, 'name'),
+  (2, 'comment'),
+  (3, 'source')
+ON CONFLICT DO NOTHING;
+
+-- name: PopulateActivitySessionsMetadata :exec
+INSERT INTO activity_sessions_metadata (activity_session, kind, value)
+VALUES
+  (209, 1, 'Sheringham Park with Alisha'),
+  (208, 1, 'Martham base'),
+  (205, 1, 'From Highball'),
+  (203, 1, 'To Highball'),
+  (201, 1, 'Wednesday night football'),
+  (201, 2, 'https://football.jdb.sh/2022/2022-12-21.html'),
+  (200, 1, 'Testing Football.PRG'),
+  (127, 1, 'Grinnell glacier')
+ON CONFLICT DO NOTHING;
+
+-- name: PopulateDashboards :exec
+INSERT INTO dashboards (sport, uid, title)
+VALUES
+  (1, 'nzZ73htVz', 'running'),
+  (11, '9wmcqhpVk', 'walking'),
+  (17, 'gotNq2pVz', 'hiking'),
+  (31, 'MfI_jhp4k', 'rock-climbing'),
+  (41, 'Y0hvq2p4z', 'kayaking')
+ON CONFLICT DO NOTHING;

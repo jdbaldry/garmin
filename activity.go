@@ -17,12 +17,10 @@ import (
 
 var errNotActivity = errors.New("not an activity")
 
-func createActivityParams(activity *fit.ActivityMsg) postgresql.CreateActivityParams {
+func createActivityParams(activity *fit.ActivityMsg, source string) postgresql.CreateActivityParams {
 	return postgresql.CreateActivityParams{
 		StartTs: sql.NullTime{
-			Time: activity.Timestamp.Add(
-				-(time.Duration(activity.GetTotalTimerTimeScaled()) * time.Second),
-			),
+			Time:  activity.Timestamp.Add(-(time.Duration(activity.GetTotalTimerTimeScaled()) * time.Second)),
 			Valid: true,
 		},
 		EndTs:          sql.NullTime{Time: activity.Timestamp, Valid: true},
@@ -33,6 +31,7 @@ func createActivityParams(activity *fit.ActivityMsg) postgresql.CreateActivityPa
 		EventType:      sql.NullInt16{Int16: int16(activity.EventType), Valid: true},
 		LocalTs:        sql.NullTime{Time: activity.LocalTimestamp, Valid: true},
 		EventGroup:     sql.NullInt16{Int16: int16(activity.EventGroup), Valid: true},
+		Source:         sql.NullString{String: source, Valid: true},
 	}
 }
 
@@ -49,8 +48,8 @@ func createActivitySessionParams(activityID int64, session *fit.SessionMsg) post
 		TotalTimerTime:   sql.NullFloat64{Float64: session.GetTotalTimerTimeScaled(), Valid: true},
 		TotalDistance:    sql.NullFloat64{Float64: session.GetTotalDistanceScaled(), Valid: true},
 		TotalCalories:    sql.NullInt16{Int16: int16(session.TotalCalories), Valid: true},
-		AvgSpeed:         sql.NullFloat64{Float64: session.GetAvgSpeedScaled(), Valid: true},
-		MaxSpeed:         sql.NullFloat64{Float64: session.GetMaxSpeedScaled(), Valid: true},
+		AvgSpeed:         sql.NullFloat64{Float64: session.GetEnhancedAvgSpeedScaled(), Valid: true},
+		MaxSpeed:         sql.NullFloat64{Float64: session.GetEnhancedMaxSpeedScaled(), Valid: true},
 		AvgHeartRate:     sql.NullInt16{Int16: int16(session.AvgHeartRate), Valid: true},
 		MaxHeartRate:     sql.NullInt16{Int16: int16(session.MaxHeartRate), Valid: true},
 	}
@@ -70,8 +69,8 @@ func createActivityLapParams(activityID int64, lap *fit.LapMsg) postgresql.Creat
 		TotalTimerTime:   sql.NullFloat64{Float64: lap.GetTotalTimerTimeScaled(), Valid: true},
 		TotalDistance:    sql.NullFloat64{Float64: lap.GetTotalDistanceScaled(), Valid: true},
 		TotalCalories:    sql.NullInt16{Int16: int16(lap.TotalCalories), Valid: true},
-		AvgSpeed:         sql.NullFloat64{Float64: lap.GetAvgSpeedScaled(), Valid: true},
-		MaxSpeed:         sql.NullFloat64{Float64: lap.GetMaxSpeedScaled(), Valid: true},
+		AvgSpeed:         sql.NullFloat64{Float64: lap.GetEnhancedAvgSpeedScaled(), Valid: true},
+		MaxSpeed:         sql.NullFloat64{Float64: lap.GetEnhancedMaxSpeedScaled(), Valid: true},
 		AvgHeartRate:     sql.NullInt16{Int16: int16(lap.AvgHeartRate), Valid: true},
 		MaxHeartRate:     sql.NullInt16{Int16: int16(lap.MaxHeartRate), Valid: true},
 	}
@@ -97,13 +96,13 @@ func createActivityRecordParams(activityID int64, record *fit.RecordMsg) postgre
 	}
 }
 
-func ingestActivity(ctx context.Context, queries *postgresql.Queries, data *fit.File) error {
+func ingestActivity(ctx context.Context, queries *postgresql.Queries, data *fit.File, source string) error {
 	activityFile, err := data.Activity()
 	if err != nil {
 		return errNotActivity
 	}
 
-	params := createActivityParams(activityFile.Activity)
+	params := createActivityParams(activityFile.Activity, source)
 	log.Infof("Creating activity with params: %+v", params)
 
 	id, err := queries.CreateActivity(ctx, params)
@@ -171,6 +170,6 @@ func ingestActivities(ctx context.Context, queries *postgresql.Queries) error {
 			return err
 		}
 
-		return ingestActivity(ctx, queries, data)
+		return ingestActivity(ctx, queries, data, filepath.Base(path))
 	})
 }

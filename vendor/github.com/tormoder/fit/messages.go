@@ -5120,7 +5120,6 @@ type HrMsg struct {
 	Time256             uint8
 	FilteredBpm         []uint8
 	EventTimestamp      []uint32
-	EventTimestamp12    []byte
 }
 
 // NewHrMsg returns a hr FIT message
@@ -5132,7 +5131,6 @@ func NewHrMsg() *HrMsg {
 		Time256:             0xFF,
 		FilteredBpm:         nil,
 		EventTimestamp:      nil,
-		EventTimestamp12:    nil,
 	}
 }
 
@@ -5172,120 +5170,9 @@ func (x *HrMsg) GetEventTimestampScaled() []float64 {
 	return s
 }
 
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
-// GetEventTimestampFromEventTimestamp12 returns
-// EventTimestamp with the scale and offset defined by the "EventTimestamp"
-// component in the EventTimestamp12 field. NaN is
-// if the field has an invalid value (i.e. has not been set).
-func (x *HrMsg) GetEventTimestampFromEventTimestamp12() float64 {
-	if x.EventTimestamp == nil {
-		return math.NaN()
-	}
-	return float64(x.EventTimestamp) / 10
-}
-
 func (x *HrMsg) expandComponents() {
 	if x.Time256 != 0xFF {
 	}
-	// TODO
 }
 
 // StressLevelMsg represents the stress_level FIT message type.

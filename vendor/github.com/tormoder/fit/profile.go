@@ -1063,7 +1063,6 @@ var _fields = [...][256]*field{
 		1:   {2, 1, types.Fit(2), 1},
 		6:   {3, 6, types.Fit(34), 1},
 		9:   {4, 9, types.Fit(38), 1},
-		10:  {5, 10, types.Fit(45), 1},
 	},
 
 	MesgNumStressLevel: {},

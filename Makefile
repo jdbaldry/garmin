@@ -109,8 +109,6 @@ ingest: generate sleep
 vendor: ## Update vendored Go source code.
 vendor: PersonalProfile.xlsx go.mod go.sum
 	go mod tidy && go mod vendor
-	rm -rf $@/github.com/tormoder/fit
-	mkdir -p $@/github.com/tormoder/fit/
 	fitgen -hrst -verbose -sdk $(RELEASE)-Personal $< $@/github.com/tormoder/fit
 
 Profile.csv.0 Profile.csv.1: ## Convert profile into CSV for editing.
@@ -119,5 +117,4 @@ Profile.csv.0 Profile.csv.1: Profile.xlsx
 
 PersonalProfile.xlsx: ## Convert modified personal profile into XLSX for code generation.
 PersonalProfile.xlsx: Profile.csv.0 Profile.csv.1
-	ssconvert --verbose --merge-to=PersonalProfile.xlsx Profile.csv.* \
-		--set G1235='4000' # Fix for corrupted event_timestamp field.
+	ssconvert --verbose --merge-to=PersonalProfile.xlsx $^

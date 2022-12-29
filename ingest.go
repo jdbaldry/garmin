@@ -49,5 +49,5 @@ func ingest(ctx context.Context, queries *postgresql.Queries, path string) error
 		return err
 	}
 
-	return ingestActivity(ctx, queries, data)
+	return ingestActivity(ctx, queries, data, filepath.Base(path))
 }

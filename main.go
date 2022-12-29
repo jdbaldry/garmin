@@ -40,6 +40,18 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	if err := queries.PopulateMetadata(ctx); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := queries.PopulateDashboards(ctx); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := queries.PopulateSleepActivityLevels(ctx); err != nil {
+		log.Fatalln(err)
+	}
+
 	if file := flag.Arg(0); file != "" {
 		if err := ingest(ctx, queries, file); err != nil {
 			log.Fatalln(err)
@@ -53,6 +65,10 @@ func main() {
 	}
 
 	if err := ingestSleeps(ctx, queries); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := queries.PopulateActivitySessionsMetadata(ctx); err != nil {
 		log.Fatalln(err)
 	}
 }
