@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS activity_sessions (
     max_speed double precision, -- double precision is used because the scaled values returns a float64
     avg_heart_rate smallint,
     max_heart_rate smallint,
+    avg_vertical_ratio double precision, -- double precision is used because the scaled values returns a float64
     UNIQUE (activity, start_ts, end_ts)
 );
 
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS activity_laps (
     max_speed double precision, -- double precision is used because the scaled values returns a float64
     avg_heart_rate smallint,
     max_heart_rate smallint,
+    avg_vertical_ratio double precision, -- double precision is used because the scaled values returns a float64
     UNIQUE (activity, start_ts, end_ts)
 );
 
@@ -75,6 +77,7 @@ CREATE TABLE IF NOT EXISTS activity_records (
     left_right_balance smallint,
     gps_accuracy smallint,
     vertical_oscillation double precision, -- double precision is used because the scaled values returns a float64
+    vertical_ratio double precision, -- double precision is used because the scaled values returns a float64
     UNIQUE (activity, ts)
 );
 

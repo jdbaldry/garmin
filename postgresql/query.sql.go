@@ -76,9 +76,10 @@ INSERT INTO activity_laps (
     avg_speed,
     max_speed,
     avg_heart_rate,
-    max_heart_rate
+    max_heart_rate,
+    avg_vertical_ratio
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
 ON CONFLICT DO NOTHING
 RETURNING id
 `
@@ -100,6 +101,7 @@ type CreateActivityLapParams struct {
 	MaxSpeed         sql.NullFloat64
 	AvgHeartRate     sql.NullInt16
 	MaxHeartRate     sql.NullInt16
+	AvgVerticalRatio sql.NullFloat64
 }
 
 func (q *Queries) CreateActivityLap(ctx context.Context, arg CreateActivityLapParams) (int64, error) {
@@ -120,6 +122,7 @@ func (q *Queries) CreateActivityLap(ctx context.Context, arg CreateActivityLapPa
 		arg.MaxSpeed,
 		arg.AvgHeartRate,
 		arg.MaxHeartRate,
+		arg.AvgVerticalRatio,
 	)
 	var id int64
 	err := row.Scan(&id)
@@ -142,9 +145,10 @@ INSERT INTO activity_records (
     enhanced_speed,
     left_right_balance,
     gps_accuracy,
-    vertical_oscillation
+    vertical_oscillation,
+    vertical_ratio
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
 ON CONFLICT DO NOTHING
 RETURNING id
 `
@@ -165,6 +169,7 @@ type CreateActivityRecordParams struct {
 	LeftRightBalance    sql.NullInt16
 	GpsAccuracy         sql.NullInt16
 	VerticalOscillation sql.NullFloat64
+	VerticalRatio       sql.NullFloat64
 }
 
 func (q *Queries) CreateActivityRecord(ctx context.Context, arg CreateActivityRecordParams) (int64, error) {
@@ -184,6 +189,7 @@ func (q *Queries) CreateActivityRecord(ctx context.Context, arg CreateActivityRe
 		arg.LeftRightBalance,
 		arg.GpsAccuracy,
 		arg.VerticalOscillation,
+		arg.VerticalRatio,
 	)
 	var id int64
 	err := row.Scan(&id)
@@ -206,9 +212,10 @@ INSERT INTO activity_sessions (
     avg_speed,
     max_speed,
     avg_heart_rate,
-    max_heart_rate
+    max_heart_rate,
+    avg_vertical_ratio
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
 ON CONFLICT DO NOTHING
 RETURNING id
 `
@@ -229,6 +236,7 @@ type CreateActivitySessionParams struct {
 	MaxSpeed         sql.NullFloat64
 	AvgHeartRate     sql.NullInt16
 	MaxHeartRate     sql.NullInt16
+	AvgVerticalRatio sql.NullFloat64
 }
 
 func (q *Queries) CreateActivitySession(ctx context.Context, arg CreateActivitySessionParams) (int64, error) {
@@ -248,6 +256,7 @@ func (q *Queries) CreateActivitySession(ctx context.Context, arg CreateActivityS
 		arg.MaxSpeed,
 		arg.AvgHeartRate,
 		arg.MaxHeartRate,
+		arg.AvgVerticalRatio,
 	)
 	var id int64
 	err := row.Scan(&id)

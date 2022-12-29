@@ -52,6 +52,7 @@ func createActivitySessionParams(activityID int64, session *fit.SessionMsg) post
 		MaxSpeed:         sql.NullFloat64{Float64: session.GetEnhancedMaxSpeedScaled(), Valid: true},
 		AvgHeartRate:     sql.NullInt16{Int16: int16(session.AvgHeartRate), Valid: true},
 		MaxHeartRate:     sql.NullInt16{Int16: int16(session.MaxHeartRate), Valid: true},
+		AvgVerticalRatio: sql.NullFloat64{Float64: session.GetAvgVerticalRatioScaled(), Valid: true},
 	}
 }
 
@@ -73,6 +74,7 @@ func createActivityLapParams(activityID int64, lap *fit.LapMsg) postgresql.Creat
 		MaxSpeed:         sql.NullFloat64{Float64: lap.GetEnhancedMaxSpeedScaled(), Valid: true},
 		AvgHeartRate:     sql.NullInt16{Int16: int16(lap.AvgHeartRate), Valid: true},
 		MaxHeartRate:     sql.NullInt16{Int16: int16(lap.MaxHeartRate), Valid: true},
+		AvgVerticalRatio: sql.NullFloat64{Float64: lap.GetAvgVerticalRatioScaled(), Valid: true},
 	}
 }
 
@@ -93,6 +95,7 @@ func createActivityRecordParams(activityID int64, record *fit.RecordMsg) postgre
 		LeftRightBalance:    sql.NullInt16{Int16: int16(record.LeftRightBalance), Valid: true},
 		GpsAccuracy:         sql.NullInt16{Int16: int16(record.GpsAccuracy), Valid: true},
 		VerticalOscillation: sql.NullFloat64{Float64: record.GetVerticalOscillationScaled(), Valid: true},
+		VerticalRatio:       sql.NullFloat64{Float64: record.GetVerticalRatioScaled(), Valid: true},
 	}
 }
 
