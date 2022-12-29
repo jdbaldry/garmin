@@ -63,7 +63,7 @@ rsync: $(FIT_DIR)/Primary/GARMIN/Activity
 		$(MOUNT_DIR)/./Primary/GARMIN/Sleep \
 		$(CURDIR)/$(FIT_DIR)
 
-postgresql/query.sql.go: query.sql
+postgresql/query.sql.go: schema.sql query.sql
 	sqlc generate
 
 .PHONY: generate
@@ -84,4 +84,40 @@ FitSDKRelease_%.zip:
 
 Profile.xlsx: ## Extract the Fit SDK profile.
 Profile.xlsx: FitSDKRelease_$(RELEASE).zip
-	unzip $< Profile.xlsx
+	unzip -o $< $@
+	touch $@
+
+FitCSVTool.jar: ## Extract the FitCSVTool.
+FitCSVTool.jar: FitSDKRelease_$(RELEASE).zip
+	unzip -o -j $< java/FitCSVTool.jar
+	touch $@
+
+%.csv: ## Convert a Fit file into a CSV file.
+%.csv: %.fit
+	java -jar FitCSVTool.jar -b $< $@
+
+.PHONY: sleep
+sleep: ## Convert all sleep Fit files into CSV files.
+sleep: FitCSVTool.jar
+	$(MAKE) $(patsubst %.fit,%.csv,$(wildcard fit/Primary/GARMIN/Sleep/*))
+
+.PHONY: ingest
+ingest: ## Ingest rsync'd data.
+ingest: generate sleep
+	go run ./
+
+vendor: ## Update vendored Go source code.
+vendor: PersonalProfile.xlsx go.mod go.sum
+	go mod tidy && go mod vendor
+	rm -rf $@/github.com/tormoder/fit
+	mkdir -p $@/github.com/tormoder/fit/
+	fitgen -hrst -verbose -sdk $(RELEASE)-Personal $< $@/github.com/tormoder/fit
+
+Profile.csv.0 Profile.csv.1: ## Convert profile into CSV for editing.
+Profile.csv.0 Profile.csv.1: Profile.xlsx
+	ssconvert --export-file-per-sheet $< Profile.csv
+
+PersonalProfile.xlsx: ## Convert modified personal profile into XLSX for code generation.
+PersonalProfile.xlsx: Profile.csv.0 Profile.csv.1
+	ssconvert --verbose --merge-to=PersonalProfile.xlsx Profile.csv.* \
+		--set G1235='4000' # Fix for corrupted event_timestamp field.
