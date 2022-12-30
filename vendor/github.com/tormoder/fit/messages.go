@@ -5177,12 +5177,17 @@ func (x *HrMsg) expandComponents() {
 
 // StressLevelMsg represents the stress_level FIT message type.
 type StressLevelMsg struct {
+	StressLevelValue int16
+	StressLevelTime  time.Time // Time stress score was calculated
 }
 
 // NewStressLevelMsg returns a stress_level FIT message
 // initialized to all-invalid values.
 func NewStressLevelMsg() *StressLevelMsg {
-	return &StressLevelMsg{}
+	return &StressLevelMsg{
+		StressLevelValue: 0x7FFF,
+		StressLevelTime:  timeBase,
+	}
 }
 
 // MemoGlobMsg represents the memo_glob FIT message type.

@@ -146,6 +146,12 @@ type Sport struct {
 	Name sql.NullString
 }
 
+type StressLevel struct {
+	ID    int64
+	Ts    sql.NullTime
+	Value sql.NullInt16
+}
+
 type SubSport struct {
 	ID   int16
 	Name sql.NullString

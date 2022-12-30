@@ -106,6 +106,7 @@ type MonitoringAFile struct {
 	MonitoringInfo *MonitoringInfoMsg
 	Monitorings    []*MonitoringMsg
 	DeviceInfos    []*DeviceInfoMsg
+	StressLevels   []*StressLevelMsg
 }
 
 // ActivitySummaryFile represents the Activity Summary FIT file type.
@@ -129,6 +130,7 @@ type MonitoringBFile struct {
 	MonitoringInfo *MonitoringInfoMsg
 	Monitorings    []*MonitoringMsg
 	DeviceInfos    []*DeviceInfoMsg
+	StressLevels   []*StressLevelMsg
 }
 
 // SegmentFile represents the Segment FIT file type.
@@ -360,6 +362,8 @@ func (m *MonitoringBFile) add(msg reflect.Value) {
 		m.Monitorings = append(m.Monitorings, &tmp)
 	case DeviceInfoMsg:
 		m.DeviceInfos = append(m.DeviceInfos, &tmp)
+	case StressLevelMsg:
+		m.StressLevels = append(m.StressLevels, &tmp)
 	default:
 	}
 }

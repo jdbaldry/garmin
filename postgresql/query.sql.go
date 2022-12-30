@@ -387,6 +387,25 @@ func (q *Queries) CreateSleepRecord(ctx context.Context, arg CreateSleepRecordPa
 	return id, err
 }
 
+const createStressLevel = `-- name: CreateStressLevel :one
+INSERT INTO stress_levels (ts, value)
+VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id
+`
+
+type CreateStressLevelParams struct {
+	Ts    sql.NullTime
+	Value sql.NullInt16
+}
+
+func (q *Queries) CreateStressLevel(ctx context.Context, arg CreateStressLevelParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, createStressLevel, arg.Ts, arg.Value)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const getActivity = `-- name: GetActivity :one
 SELECT id, start_ts, end_ts, total_timer_time, num_sessions, type, event, event_type, local_ts, event_group, source FROM activities
 WHERE id = $1 LIMIT 1

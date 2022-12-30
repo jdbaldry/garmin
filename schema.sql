@@ -153,3 +153,9 @@ CREATE TABLE IF NOT EXISTS dashboards (
   uid varchar,
   title varchar
 );
+
+CREATE TABLE IF NOT EXISTS stress_levels (
+  id bigserial PRIMARY KEY,
+  ts timestamp,
+  value smallint
+);

@@ -96,6 +96,9 @@ FitCSVTool.jar: FitSDKRelease_$(RELEASE).zip
 %.csv: %.fit
 	java -jar FitCSVTool.jar -b $< $@
 
+%.fit: %.FIT
+	mv $< $@
+
 .PHONY: sleep
 sleep: ## Convert all sleep Fit files into CSV files.
 sleep: FitCSVTool.jar

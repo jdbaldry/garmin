@@ -303,3 +303,9 @@ VALUES
   (31, 'MfI_jhp4k', 'rock-climbing'),
   (41, 'Y0hvq2p4z', 'kayaking')
 ON CONFLICT DO NOTHING;
+
+-- name: CreateStressLevel :one
+INSERT INTO stress_levels (ts, value)
+VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id;

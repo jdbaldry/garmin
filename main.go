@@ -64,6 +64,10 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	if err := ingestStressLevels(ctx, queries); err != nil {
+		log.Fatalln(err)
+	}
+
 	if err := ingestSleeps(ctx, queries); err != nil {
 		log.Fatalln(err)
 	}
