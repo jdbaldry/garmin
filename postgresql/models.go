@@ -99,6 +99,12 @@ type Dashboard struct {
 	Title sql.NullString
 }
 
+type HeartRate struct {
+	ID    int64
+	Ts    sql.NullTime
+	Value sql.NullInt16
+}
+
 type Metadatum struct {
 	ID   int64
 	Name sql.NullString
@@ -144,6 +150,17 @@ type SleepRecord struct {
 type Sport struct {
 	ID   int16
 	Name sql.NullString
+}
+
+type Step struct {
+	ID             int64
+	Ts             sql.NullTime
+	Distance       sql.NullFloat64
+	Cycles         sql.NullInt32
+	ActiveTime     sql.NullInt32
+	ActiveCalories sql.NullInt32
+	DurationMin    sql.NullInt16
+	ActivityType   sql.NullInt16
 }
 
 type StressLevel struct {

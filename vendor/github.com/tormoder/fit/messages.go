@@ -5046,6 +5046,8 @@ type MonitoringMsg struct {
 	Cycles16        uint16
 	ActiveTime16    uint16
 	LocalTimestamp  time.Time // Must align to logging interval, for example, time must be 00:00:00 for daily log.
+	Timestamp16     uint16
+	HeartRate       uint8
 }
 
 // NewMonitoringMsg returns a monitoring FIT message
@@ -5064,6 +5066,8 @@ func NewMonitoringMsg() *MonitoringMsg {
 		Cycles16:        0xFFFF,
 		ActiveTime16:    0xFFFF,
 		LocalTimestamp:  timeBase,
+		Timestamp16:     0xFFFF,
+		HeartRate:       0xFF,
 	}
 }
 

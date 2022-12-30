@@ -1055,6 +1055,8 @@ var _fields = [...][256]*field{
 		9:   {9, 9, types.Fit(4), 1},
 		10:  {10, 10, types.Fit(4), 1},
 		11:  {11, 11, types.Fit(134), 1},
+		26:  {12, 26, types.Fit(4), 1},
+		27:  {13, 27, types.Fit(2), 1},
 	},
 
 	MesgNumHr: {

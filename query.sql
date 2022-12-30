@@ -309,3 +309,9 @@ INSERT INTO stress_levels (ts, value)
 VALUES ($1, $2)
 ON CONFLICT DO NOTHING
 RETURNING id;
+
+-- name: CreateHeartRate :one
+INSERT INTO heart_rates (ts, value)
+VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id;

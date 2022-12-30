@@ -156,6 +156,13 @@ CREATE TABLE IF NOT EXISTS dashboards (
 
 CREATE TABLE IF NOT EXISTS stress_levels (
   id bigserial PRIMARY KEY,
-  ts timestamp,
+  ts timestamp UNIQUE,
   value smallint
 );
+
+CREATE TABLE IF NOT EXISTS heart_rates (
+  id bigserial PRIMARY KEY,
+  ts timestamp UNIQUE,
+  value smallint
+);
+

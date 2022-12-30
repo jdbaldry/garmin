@@ -272,6 +272,25 @@ func (q *Queries) CreateActivitySession(ctx context.Context, arg CreateActivityS
 	return id, err
 }
 
+const createHeartRate = `-- name: CreateHeartRate :one
+INSERT INTO heart_rates (ts, value)
+VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id
+`
+
+type CreateHeartRateParams struct {
+	Ts    sql.NullTime
+	Value sql.NullInt16
+}
+
+func (q *Queries) CreateHeartRate(ctx context.Context, arg CreateHeartRateParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, createHeartRate, arg.Ts, arg.Value)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const createMonitoring = `-- name: CreateMonitoring :one
 INSERT INTO monitorings (
   ts,
