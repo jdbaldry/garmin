@@ -17,85 +17,88 @@ import (
 
 var errNotActivity = errors.New("not an activity")
 
-func createActivityParams(activity *fit.ActivityMsg, source string) postgresql.CreateActivityParams {
+func createActivityParams(msg *fit.ActivityMsg, source string) postgresql.CreateActivityParams {
 	return postgresql.CreateActivityParams{
 		StartTs: sql.NullTime{
-			Time:  activity.Timestamp.Add(-(time.Duration(activity.GetTotalTimerTimeScaled()) * time.Second)),
+			Time:  msg.Timestamp.Add(-(time.Duration(msg.GetTotalTimerTimeScaled()) * time.Second)),
 			Valid: true,
 		},
-		EndTs:          sql.NullTime{Time: activity.Timestamp, Valid: true},
-		TotalTimerTime: sql.NullFloat64{Float64: activity.GetTotalTimerTimeScaled(), Valid: true},
-		NumSessions:    sql.NullInt32{Int32: int32(activity.NumSessions), Valid: true},
-		Type:           sql.NullInt32{Int32: int32(activity.Type), Valid: true},
-		Event:          sql.NullInt16{Int16: int16(activity.Event), Valid: true},
-		EventType:      sql.NullInt16{Int16: int16(activity.EventType), Valid: true},
-		LocalTs:        sql.NullTime{Time: activity.LocalTimestamp, Valid: true},
-		EventGroup:     sql.NullInt16{Int16: int16(activity.EventGroup), Valid: true},
+		EndTs:          sql.NullTime{Time: msg.Timestamp, Valid: true},
+		TotalTimerTime: sql.NullFloat64{Float64: msg.GetTotalTimerTimeScaled(), Valid: true},
+		NumSessions:    sql.NullInt32{Int32: int32(msg.NumSessions), Valid: true},
+		Type:           sql.NullInt32{Int32: int32(msg.Type), Valid: true},
+		Event:          sql.NullInt16{Int16: int16(msg.Event), Valid: true},
+		EventType:      sql.NullInt16{Int16: int16(msg.EventType), Valid: true},
+		LocalTs:        sql.NullTime{Time: msg.LocalTimestamp, Valid: true},
+		EventGroup:     sql.NullInt16{Int16: int16(msg.EventGroup), Valid: true},
 		Source:         sql.NullString{String: source, Valid: true},
 	}
 }
 
-func createActivitySessionParams(activityID int64, session *fit.SessionMsg) postgresql.CreateActivitySessionParams {
+func createActivitySessionParams(activityID int64, msg *fit.SessionMsg) postgresql.CreateActivitySessionParams {
 	return postgresql.CreateActivitySessionParams{
 		Activity:         sql.NullInt64{Int64: activityID, Valid: true},
-		StartTs:          sql.NullTime{Time: session.StartTime, Valid: true},
-		EndTs:            sql.NullTime{Time: session.Timestamp, Valid: true},
-		Event:            sql.NullInt16{Int16: int16(session.Event), Valid: true},
-		EventType:        sql.NullInt16{Int16: int16(session.EventType), Valid: true},
-		Sport:            sql.NullInt16{Int16: int16(session.Sport), Valid: true},
-		SubSport:         sql.NullInt16{Int16: int16(session.SubSport), Valid: true},
-		TotalElapsedTime: sql.NullFloat64{Float64: session.GetTotalElapsedTimeScaled(), Valid: true},
-		TotalTimerTime:   sql.NullFloat64{Float64: session.GetTotalTimerTimeScaled(), Valid: true},
-		TotalDistance:    sql.NullFloat64{Float64: session.GetTotalDistanceScaled(), Valid: true},
-		TotalCalories:    sql.NullInt16{Int16: int16(session.TotalCalories), Valid: true},
-		AvgSpeed:         sql.NullFloat64{Float64: session.GetEnhancedAvgSpeedScaled(), Valid: true},
-		MaxSpeed:         sql.NullFloat64{Float64: session.GetEnhancedMaxSpeedScaled(), Valid: true},
-		AvgHeartRate:     sql.NullInt16{Int16: int16(session.AvgHeartRate), Valid: true},
-		MaxHeartRate:     sql.NullInt16{Int16: int16(session.MaxHeartRate), Valid: true},
-		AvgVerticalRatio: sql.NullFloat64{Float64: session.GetAvgVerticalRatioScaled(), Valid: true},
+		StartTs:          sql.NullTime{Time: msg.StartTime, Valid: true},
+		EndTs:            sql.NullTime{Time: msg.Timestamp, Valid: true},
+		Event:            sql.NullInt16{Int16: int16(msg.Event), Valid: true},
+		EventType:        sql.NullInt16{Int16: int16(msg.EventType), Valid: true},
+		Sport:            sql.NullInt16{Int16: int16(msg.Sport), Valid: true},
+		SubSport:         sql.NullInt16{Int16: int16(msg.SubSport), Valid: true},
+		TotalElapsedTime: sql.NullFloat64{Float64: msg.GetTotalElapsedTimeScaled(), Valid: true},
+		TotalTimerTime:   sql.NullFloat64{Float64: msg.GetTotalTimerTimeScaled(), Valid: true},
+		TotalDistance:    sql.NullFloat64{Float64: msg.GetTotalDistanceScaled(), Valid: true},
+		TotalCalories:    sql.NullInt16{Int16: int16(msg.TotalCalories), Valid: true},
+		AvgSpeed:         sql.NullFloat64{Float64: msg.GetEnhancedAvgSpeedScaled(), Valid: true},
+		MaxSpeed:         sql.NullFloat64{Float64: msg.GetEnhancedMaxSpeedScaled(), Valid: true},
+		AvgHeartRate:     sql.NullInt16{Int16: int16(msg.AvgHeartRate), Valid: true},
+		MaxHeartRate:     sql.NullInt16{Int16: int16(msg.MaxHeartRate), Valid: true},
+		AvgVerticalRatio: sql.NullFloat64{Float64: msg.GetAvgVerticalRatioScaled(), Valid: true},
+		AvgStanceTime:    sql.NullFloat64{Float64: msg.GetAvgStanceTimeScaled(), Valid: true},
 	}
 }
 
-func createActivityLapParams(activityID int64, lap *fit.LapMsg) postgresql.CreateActivityLapParams {
+func createActivityLapParams(activityID int64, msg *fit.LapMsg) postgresql.CreateActivityLapParams {
 	return postgresql.CreateActivityLapParams{
 		Activity:         sql.NullInt64{Int64: activityID, Valid: true},
 		MessageIndex:     sql.NullInt16{Int16: 0, Valid: false},
-		StartTs:          sql.NullTime{Time: lap.StartTime, Valid: true},
-		EndTs:            sql.NullTime{Time: lap.Timestamp, Valid: true},
-		Event:            sql.NullInt16{Int16: int16(lap.Event), Valid: true},
-		EventType:        sql.NullInt16{Int16: int16(lap.EventType), Valid: true},
-		Sport:            sql.NullInt16{Int16: int16(lap.Sport), Valid: true},
-		SubSport:         sql.NullInt16{Int16: int16(lap.SubSport), Valid: true},
-		TotalElapsedTime: sql.NullFloat64{Float64: lap.GetTotalElapsedTimeScaled(), Valid: true},
-		TotalTimerTime:   sql.NullFloat64{Float64: lap.GetTotalTimerTimeScaled(), Valid: true},
-		TotalDistance:    sql.NullFloat64{Float64: lap.GetTotalDistanceScaled(), Valid: true},
-		TotalCalories:    sql.NullInt16{Int16: int16(lap.TotalCalories), Valid: true},
-		AvgSpeed:         sql.NullFloat64{Float64: lap.GetEnhancedAvgSpeedScaled(), Valid: true},
-		MaxSpeed:         sql.NullFloat64{Float64: lap.GetEnhancedMaxSpeedScaled(), Valid: true},
-		AvgHeartRate:     sql.NullInt16{Int16: int16(lap.AvgHeartRate), Valid: true},
-		MaxHeartRate:     sql.NullInt16{Int16: int16(lap.MaxHeartRate), Valid: true},
-		AvgVerticalRatio: sql.NullFloat64{Float64: lap.GetAvgVerticalRatioScaled(), Valid: true},
+		StartTs:          sql.NullTime{Time: msg.StartTime, Valid: true},
+		EndTs:            sql.NullTime{Time: msg.Timestamp, Valid: true},
+		Event:            sql.NullInt16{Int16: int16(msg.Event), Valid: true},
+		EventType:        sql.NullInt16{Int16: int16(msg.EventType), Valid: true},
+		Sport:            sql.NullInt16{Int16: int16(msg.Sport), Valid: true},
+		SubSport:         sql.NullInt16{Int16: int16(msg.SubSport), Valid: true},
+		TotalElapsedTime: sql.NullFloat64{Float64: msg.GetTotalElapsedTimeScaled(), Valid: true},
+		TotalTimerTime:   sql.NullFloat64{Float64: msg.GetTotalTimerTimeScaled(), Valid: true},
+		TotalDistance:    sql.NullFloat64{Float64: msg.GetTotalDistanceScaled(), Valid: true},
+		TotalCalories:    sql.NullInt16{Int16: int16(msg.TotalCalories), Valid: true},
+		AvgSpeed:         sql.NullFloat64{Float64: msg.GetEnhancedAvgSpeedScaled(), Valid: true},
+		MaxSpeed:         sql.NullFloat64{Float64: msg.GetEnhancedMaxSpeedScaled(), Valid: true},
+		AvgHeartRate:     sql.NullInt16{Int16: int16(msg.AvgHeartRate), Valid: true},
+		MaxHeartRate:     sql.NullInt16{Int16: int16(msg.MaxHeartRate), Valid: true},
+		AvgVerticalRatio: sql.NullFloat64{Float64: msg.GetAvgVerticalRatioScaled(), Valid: true},
+		AvgStanceTime:    sql.NullFloat64{Float64: msg.GetAvgStanceTimeScaled(), Valid: true},
 	}
 }
 
-func createActivityRecordParams(activityID int64, record *fit.RecordMsg) postgresql.CreateActivityRecordParams {
+func createActivityRecordParams(activityID int64, msg *fit.RecordMsg) postgresql.CreateActivityRecordParams {
 	return postgresql.CreateActivityRecordParams{
 		Activity:            sql.NullInt64{Int64: activityID, Valid: true},
-		Ts:                  sql.NullTime{Time: record.Timestamp, Valid: true},
-		Altitude:            sql.NullFloat64{Float64: record.GetAltitudeScaled(), Valid: true},
-		HeartRate:           sql.NullInt16{Int16: int16(record.HeartRate), Valid: true},
-		Cadence:             sql.NullInt16{Int16: int16(record.Cadence), Valid: true},
-		Distance:            sql.NullFloat64{Float64: record.GetDistanceScaled(), Valid: true},
-		Speed:               sql.NullFloat64{Float64: record.GetSpeedScaled(), Valid: true},
-		Cycles:              sql.NullInt16{Int16: int16(record.Cycles), Valid: true},
-		PositionLat:         sql.NullFloat64{Float64: record.PositionLat.Degrees(), Valid: true},
-		PositionLong:        sql.NullFloat64{Float64: record.PositionLong.Degrees(), Valid: true},
-		EnhancedAltitude:    sql.NullFloat64{Float64: record.GetEnhancedAltitudeScaled(), Valid: true},
-		EnhancedSpeed:       sql.NullFloat64{Float64: record.GetEnhancedSpeedScaled(), Valid: true},
-		LeftRightBalance:    sql.NullInt16{Int16: int16(record.LeftRightBalance), Valid: true},
-		GpsAccuracy:         sql.NullInt16{Int16: int16(record.GpsAccuracy), Valid: true},
-		VerticalOscillation: sql.NullFloat64{Float64: record.GetVerticalOscillationScaled(), Valid: true},
-		VerticalRatio:       sql.NullFloat64{Float64: record.GetVerticalRatioScaled(), Valid: true},
+		Ts:                  sql.NullTime{Time: msg.Timestamp, Valid: true},
+		Altitude:            sql.NullFloat64{Float64: msg.GetAltitudeScaled(), Valid: true},
+		HeartRate:           sql.NullInt16{Int16: int16(msg.HeartRate), Valid: true},
+		Cadence:             sql.NullInt16{Int16: int16(msg.Cadence), Valid: true},
+		Distance:            sql.NullFloat64{Float64: msg.GetDistanceScaled(), Valid: true},
+		Speed:               sql.NullFloat64{Float64: msg.GetSpeedScaled(), Valid: true},
+		Cycles:              sql.NullInt16{Int16: int16(msg.Cycles), Valid: true},
+		PositionLat:         sql.NullFloat64{Float64: msg.PositionLat.Degrees(), Valid: true},
+		PositionLong:        sql.NullFloat64{Float64: msg.PositionLong.Degrees(), Valid: true},
+		EnhancedAltitude:    sql.NullFloat64{Float64: msg.GetEnhancedAltitudeScaled(), Valid: true},
+		EnhancedSpeed:       sql.NullFloat64{Float64: msg.GetEnhancedSpeedScaled(), Valid: true},
+		LeftRightBalance:    sql.NullInt16{Int16: int16(msg.LeftRightBalance), Valid: true},
+		GpsAccuracy:         sql.NullInt16{Int16: int16(msg.GpsAccuracy), Valid: true},
+		VerticalOscillation: sql.NullFloat64{Float64: msg.GetVerticalOscillationScaled(), Valid: true},
+		VerticalRatio:       sql.NullFloat64{Float64: msg.GetVerticalRatioScaled(), Valid: true},
+		StanceTime:          sql.NullFloat64{Float64: msg.GetStanceTimeScaled(), Valid: true},
 	}
 }
 

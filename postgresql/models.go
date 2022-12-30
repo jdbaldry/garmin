@@ -41,6 +41,7 @@ type ActivityLap struct {
 	AvgHeartRate     sql.NullInt16
 	MaxHeartRate     sql.NullInt16
 	AvgVerticalRatio sql.NullFloat64
+	AvgStanceTime    sql.NullFloat64
 }
 
 type ActivityRecord struct {
@@ -61,6 +62,7 @@ type ActivityRecord struct {
 	GpsAccuracy         sql.NullInt16
 	VerticalOscillation sql.NullFloat64
 	VerticalRatio       sql.NullFloat64
+	StanceTime          sql.NullFloat64
 }
 
 type ActivitySession struct {
@@ -81,6 +83,7 @@ type ActivitySession struct {
 	AvgHeartRate     sql.NullInt16
 	MaxHeartRate     sql.NullInt16
 	AvgVerticalRatio sql.NullFloat64
+	AvgStanceTime    sql.NullFloat64
 }
 
 type ActivitySessionsMetadatum struct {

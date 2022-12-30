@@ -36,9 +36,10 @@ INSERT INTO activity_sessions (
     max_speed,
     avg_heart_rate,
     max_heart_rate,
-    avg_vertical_ratio
+    avg_vertical_ratio,
+    avg_stance_time
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
 ON CONFLICT DO NOTHING
 RETURNING id;
 
@@ -60,9 +61,10 @@ INSERT INTO activity_laps (
     max_speed,
     avg_heart_rate,
     max_heart_rate,
-    avg_vertical_ratio
+    avg_vertical_ratio,
+    avg_stance_time
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
 ON CONFLICT DO NOTHING
 RETURNING id;
 
@@ -83,9 +85,10 @@ INSERT INTO activity_records (
     left_right_balance,
     gps_accuracy,
     vertical_oscillation,
-    vertical_ratio
+    vertical_ratio,
+    stance_time
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
 ON CONFLICT DO NOTHING
 RETURNING id;
 
