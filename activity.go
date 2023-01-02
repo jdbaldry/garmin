@@ -15,8 +15,6 @@ import (
 	"jdb.sh/garmin/postgresql"
 )
 
-var errNotActivity = errors.New("not an activity")
-
 func createActivityParams(msg *fit.ActivityMsg, source string) postgresql.CreateActivityParams {
 	return postgresql.CreateActivityParams{
 		StartTs: sql.NullTime{
@@ -105,7 +103,7 @@ func createActivityRecordParams(activityID int64, msg *fit.RecordMsg) postgresql
 func ingestActivity(ctx context.Context, queries *postgresql.Queries, data *fit.File, source string) error {
 	activityFile, err := data.Activity()
 	if err != nil {
-		return errNotActivity
+		return err
 	}
 
 	params := createActivityParams(activityFile.Activity, source)

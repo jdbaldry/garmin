@@ -50,7 +50,7 @@ func createHeartRateParams(msg *fit.MonitoringMsg, timestamp time.Time) postgres
 func ingestHeartRate(ctx context.Context, queries *postgresql.Queries, data *fit.File) error {
 	monitoringFile, err := data.MonitoringB()
 	if err != nil {
-		return errNotMonitor
+		return err
 	}
 
 	var timestamp time.Time

@@ -13,8 +13,6 @@ import (
 	"jdb.sh/garmin/postgresql"
 )
 
-var errNotMonitor = errors.New("not a monitor")
-
 func createStressLevelParams(msg *fit.StressLevelMsg) postgresql.CreateStressLevelParams {
 	return postgresql.CreateStressLevelParams{
 		Ts:    sql.NullTime{Time: msg.StressLevelTime, Valid: true},
@@ -25,7 +23,7 @@ func createStressLevelParams(msg *fit.StressLevelMsg) postgresql.CreateStressLev
 func ingestStressLevel(ctx context.Context, queries *postgresql.Queries, data *fit.File) error {
 	monitoringFile, err := data.MonitoringB()
 	if err != nil {
-		return errNotMonitor
+		return err
 	}
 
 	for _, sl := range monitoringFile.StressLevels {
