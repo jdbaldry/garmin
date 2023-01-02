@@ -17,6 +17,7 @@ import (
 var ddl string
 
 func main() {
+	sleeps := flag.Bool("sleeps", false, "Only ingest sleeps")
 	flag.Parse()
 
 	ctx := context.Background()
@@ -32,60 +33,75 @@ func main() {
 
 	queries := postgresql.New(db)
 
-	log.Infoln("Populating sports")
-	if err := queries.PopulateSports(ctx); err != nil {
-		log.Fatalln(err)
-	}
+	if !*sleeps {
+		log.Infoln("Populating sports")
 
-	log.Infoln("Populating sub sports")
-	if err := queries.PopulateSubSports(ctx); err != nil {
-		log.Fatalln(err)
-	}
+		if err := queries.PopulateSports(ctx); err != nil {
+			log.Fatalln(err)
+		}
 
-	log.Infoln("Populating metadata")
-	if err := queries.PopulateMetadata(ctx); err != nil {
-		log.Fatalln(err)
-	}
+		log.Infoln("Populating sub sports")
 
-	log.Infoln("Populating dashboards")
-	if err := queries.PopulateDashboards(ctx); err != nil {
-		log.Fatalln(err)
+		if err := queries.PopulateSubSports(ctx); err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Infoln("Populating metadata")
+
+		if err := queries.PopulateMetadata(ctx); err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Infoln("Populating dashboards")
+
+		if err := queries.PopulateDashboards(ctx); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	log.Infoln("Populating sleep activity levels")
+
 	if err := queries.PopulateSleepActivityLevels(ctx); err != nil {
 		log.Fatalln(err)
 	}
 
-	if file := flag.Arg(0); file != "" {
-		if err := ingest(ctx, queries, file); err != nil {
+	if !*sleeps {
+		if file := flag.Arg(0); file != "" {
+			if err := ingest(ctx, queries, file); err != nil {
+				log.Fatalln(err)
+			}
+
+			os.Exit(0)
+		}
+
+		log.Infoln("Ingesting activities")
+
+		if err := ingestActivities(ctx, queries); err != nil {
 			log.Fatalln(err)
 		}
 
-		os.Exit(0)
-	}
+		log.Infoln("Ingesting heart rates")
 
-	log.Infoln("Ingesting activities")
-	if err := ingestActivities(ctx, queries); err != nil {
-		log.Fatalln(err)
-	}
+		if err := ingestHeartRates(ctx, queries); err != nil {
+			log.Fatalln(err)
+		}
 
-	log.Infoln("Ingesting heart rates")
-	if err := ingestHeartRates(ctx, queries); err != nil {
-		log.Fatalln(err)
-	}
+		log.Infoln("Ingesting stress levels")
 
-	log.Infoln("Ingesting stress levels")
-	if err := ingestStressLevels(ctx, queries); err != nil {
-		log.Fatalln(err)
+		if err := ingestStressLevels(ctx, queries); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	log.Infoln("Ingesting sleeps")
+
 	if err := ingestSleeps(ctx, queries); err != nil {
 		log.Fatalln(err)
 	}
 
-	if err := queries.PopulateActivitySessionsMetadata(ctx); err != nil {
-		log.Fatalln(err)
+	if !*sleeps {
+		if err := queries.PopulateActivitySessionsMetadata(ctx); err != nil {
+			log.Fatalln(err)
+		}
 	}
 }
