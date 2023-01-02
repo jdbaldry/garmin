@@ -452,6 +452,8 @@ func (q *Queries) GetActivity(ctx context.Context, id int64) (Activity, error) {
 const populateActivitySessionsMetadata = `-- name: PopulateActivitySessionsMetadata :exec
 INSERT INTO activity_sessions_metadata (activity_session, kind, value)
 VALUES
+  (216, 1, 'Thorpe Marriot'),
+  (216, 2, 'Nearly a half marathon with Mabel'),
   (209, 1, 'Sheringham Park with Alisha'),
   (208, 1, 'Martham base'),
   (205, 1, 'From Highball'),
