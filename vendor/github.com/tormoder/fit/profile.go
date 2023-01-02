@@ -54,6 +54,7 @@ var knownMsgNums = map[MesgNum]bool{
 	MesgNumSpeedZone:                   true,
 	MesgNumMonitoring:                  true,
 	MesgNumTrainingFile:                true,
+	MesgNumSleepEvent:                  true,
 	MesgNumHrv:                         true,
 	MesgNumAntRx:                       true,
 	MesgNumAntTx:                       true,
@@ -103,6 +104,7 @@ var knownMsgNums = map[MesgNum]bool{
 	MesgNumDiveAlarm:                   true,
 	MesgNumExerciseTitle:               true,
 	MesgNumDiveSummary:                 true,
+	MesgNumSleepLevel:                  true,
 	MesgNumJump:                        true,
 	MesgNumClimbPro:                    true,
 	MesgNumDeviceAuxBatteryInfo:        true,
@@ -1132,7 +1134,7 @@ var _fields = [...][256]*field{
 
 	MesgNumSleepEvent: {
 		0: {0, 0, types.Fit(70), 1},
-		1: {1, 1, types.Fit(2), 1},
+		1: {1, 1, types.Fit(0), 1},
 	},
 }
 

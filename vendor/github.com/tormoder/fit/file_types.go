@@ -338,11 +338,11 @@ func (s *SleepFile) add(msg reflect.Value) {
 	x := msg.Interface()
 	switch tmp := x.(type) {
 	case EventMsg:
-		m.Events = append(m.Events, &tmp)
+		s.Events = append(s.Events, &tmp)
 	case SleepEventMsg:
-		m.SleepEvents = append(m.SleepEvents, &tmp)
+		s.SleepEvents = append(s.SleepEvents, &tmp)
 	case DeviceInfoMsg:
-		m.DeviceInfos = append(m.DeviceInfos, &tmp)
+		s.DeviceInfos = append(s.DeviceInfos, &tmp)
 	default:
 	}
 }

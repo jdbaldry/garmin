@@ -2761,6 +2761,7 @@ const (
 	MesgNumSpeedZone                   MesgNum = 53
 	MesgNumMonitoring                  MesgNum = 55
 	MesgNumTrainingFile                MesgNum = 72
+	MesgNumSleepEvent                  MesgNum = 74
 	MesgNumHrv                         MesgNum = 78
 	MesgNumAntRx                       MesgNum = 80
 	MesgNumAntTx                       MesgNum = 81
@@ -2812,6 +2813,7 @@ const (
 	MesgNumDiveAlarm                   MesgNum = 262
 	MesgNumExerciseTitle               MesgNum = 264
 	MesgNumDiveSummary                 MesgNum = 268
+	MesgNumSleepLevel                  MesgNum = 275 // https://github.com/tcgoetz/Fit/blob/e5a5ecad998d25dc34feff1fc49513b393e6195e/fitfile/message_type.py#L176
 	MesgNumJump                        MesgNum = 285
 	MesgNumClimbPro                    MesgNum = 317
 	MesgNumDeviceAuxBatteryInfo        MesgNum = 375
@@ -3499,6 +3501,18 @@ const (
 	SitUpExerciseNameWeightedXAbs                        SitUpExerciseName = 36
 	SitUpExerciseNameSitUp                               SitUpExerciseName = 37
 	SitUpExerciseNameInvalid                             SitUpExerciseName = 0xFFFF
+)
+
+// SleepActivityLevel represents the sleep_activity_level FIT type.
+type SleepActivityLevel byte
+
+const (
+	SleepActivityLevelUnmeasurable SleepActivityLevel = 0
+	SleepActivityLevelAwake        SleepActivityLevel = 1
+	SleepActivityLevelLight        SleepActivityLevel = 2
+	SleepActivityLevelDeep         SleepActivityLevel = 3
+	SleepActivityLevelREM          SleepActivityLevel = 4
+	SleepActivityLevelInvalid      SleepActivityLevel = 0xFF
 )
 
 // SourceType represents the source_type FIT type.
