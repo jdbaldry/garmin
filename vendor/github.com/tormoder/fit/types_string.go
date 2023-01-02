@@ -2709,62 +2709,44 @@ func _() {
 	_ = x[FileTypeSegment-34]
 	_ = x[FileTypeSegmentList-35]
 	_ = x[FileTypeExdConfiguration-40]
+	_ = x[FileTypeSleep-49]
 	_ = x[FileTypeMfgRangeMin-247]
 	_ = x[FileTypeMfgRangeMax-254]
 	_ = x[FileTypeInvalid-255]
 }
 
-const (
-	_FileType_name_0 = "DeviceSettingsSportActivityWorkoutCourseSchedules"
-	_FileType_name_1 = "WeightTotalsGoals"
-	_FileType_name_2 = "BloodPressureMonitoringA"
-	_FileType_name_3 = "ActivitySummary"
-	_FileType_name_4 = "MonitoringDaily"
-	_FileType_name_5 = "MonitoringB"
-	_FileType_name_6 = "SegmentSegmentList"
-	_FileType_name_7 = "ExdConfiguration"
-	_FileType_name_8 = "MfgRangeMin"
-	_FileType_name_9 = "MfgRangeMaxInvalid"
-)
+const _FileType_name = "DeviceSettingsSportActivityWorkoutCourseSchedulesWeightTotalsGoalsBloodPressureMonitoringAActivitySummaryMonitoringDailyMonitoringBSegmentSegmentListExdConfigurationSleepMfgRangeMinMfgRangeMaxInvalid"
 
-var (
-	_FileType_index_0 = [...]uint8{0, 6, 14, 19, 27, 34, 40, 49}
-	_FileType_index_1 = [...]uint8{0, 6, 12, 17}
-	_FileType_index_2 = [...]uint8{0, 13, 24}
-	_FileType_index_6 = [...]uint8{0, 7, 18}
-	_FileType_index_9 = [...]uint8{0, 11, 18}
-)
+var _FileType_map = map[FileType]string{
+	1:   _FileType_name[0:6],
+	2:   _FileType_name[6:14],
+	3:   _FileType_name[14:19],
+	4:   _FileType_name[19:27],
+	5:   _FileType_name[27:34],
+	6:   _FileType_name[34:40],
+	7:   _FileType_name[40:49],
+	9:   _FileType_name[49:55],
+	10:  _FileType_name[55:61],
+	11:  _FileType_name[61:66],
+	14:  _FileType_name[66:79],
+	15:  _FileType_name[79:90],
+	20:  _FileType_name[90:105],
+	28:  _FileType_name[105:120],
+	32:  _FileType_name[120:131],
+	34:  _FileType_name[131:138],
+	35:  _FileType_name[138:149],
+	40:  _FileType_name[149:165],
+	49:  _FileType_name[165:170],
+	247: _FileType_name[170:181],
+	254: _FileType_name[181:192],
+	255: _FileType_name[192:199],
+}
 
 func (i FileType) String() string {
-	switch {
-	case 1 <= i && i <= 7:
-		i -= 1
-		return _FileType_name_0[_FileType_index_0[i]:_FileType_index_0[i+1]]
-	case 9 <= i && i <= 11:
-		i -= 9
-		return _FileType_name_1[_FileType_index_1[i]:_FileType_index_1[i+1]]
-	case 14 <= i && i <= 15:
-		i -= 14
-		return _FileType_name_2[_FileType_index_2[i]:_FileType_index_2[i+1]]
-	case i == 20:
-		return _FileType_name_3
-	case i == 28:
-		return _FileType_name_4
-	case i == 32:
-		return _FileType_name_5
-	case 34 <= i && i <= 35:
-		i -= 34
-		return _FileType_name_6[_FileType_index_6[i]:_FileType_index_6[i+1]]
-	case i == 40:
-		return _FileType_name_7
-	case i == 247:
-		return _FileType_name_8
-	case 254 <= i && i <= 255:
-		i -= 254
-		return _FileType_name_9[_FileType_index_9[i]:_FileType_index_9[i+1]]
-	default:
-		return "FileType(" + strconv.FormatInt(int64(i), 10) + ")"
+	if str, ok := _FileType_map[i]; ok {
+		return str
 	}
+	return "FileType(" + strconv.FormatInt(int64(i), 10) + ")"
 }
 func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.

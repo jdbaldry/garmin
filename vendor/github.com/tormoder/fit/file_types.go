@@ -109,6 +109,13 @@ type MonitoringAFile struct {
 	StressLevels   []*StressLevelMsg
 }
 
+// SleepFile represents the FIT file type used for sleeping data.
+type SleepFile struct {
+	DeviceInfos []*DeviceInfoMsg
+	Events      []*EventMsg
+	SleepEvents []*SleepEventMsg
+}
+
 // ActivitySummaryFile represents the Activity Summary FIT file type.
 // Similar to Activity file, contains summary information only.
 type ActivitySummaryFile struct {
@@ -321,6 +328,19 @@ func (m *MonitoringAFile) add(msg reflect.Value) {
 		m.MonitoringInfo = &tmp
 	case MonitoringMsg:
 		m.Monitorings = append(m.Monitorings, &tmp)
+	case DeviceInfoMsg:
+		m.DeviceInfos = append(m.DeviceInfos, &tmp)
+	default:
+	}
+}
+
+func (s *SleepFile) add(msg reflect.Value) {
+	x := msg.Interface()
+	switch tmp := x.(type) {
+	case EventMsg:
+		m.Events = append(m.Events, &tmp)
+	case SleepEventMsg:
+		m.SleepEvents = append(m.SleepEvents, &tmp)
 	case DeviceInfoMsg:
 		m.DeviceInfos = append(m.DeviceInfos, &tmp)
 	default:

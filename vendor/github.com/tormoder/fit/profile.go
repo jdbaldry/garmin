@@ -1129,6 +1129,11 @@ var _fields = [...][256]*field{
 	MesgNumHrv: {
 		0: {0, 0, types.Fit(36), 1},
 	},
+
+	MesgNumSleepEvent: {
+		0: {0, 0, types.Fit(70), 1},
+		1: {1, 1, types.Fit(2), 1},
+	},
 }
 
 func getField(gmn MesgNum, fdn byte) (*field, bool) {
@@ -1231,6 +1236,7 @@ var msgsTypes = [...]reflect.Type{
 	MesgNumExdDataConceptConfiguration: reflect.TypeOf(ExdDataConceptConfigurationMsg{}),
 	MesgNumDiveSummary:                 reflect.TypeOf(DiveSummaryMsg{}),
 	MesgNumHrv:                         reflect.TypeOf(HrvMsg{}),
+	MesgNumSleepEvent:                  reflect.TypeOf(SleepEventMsg{}),
 }
 
 func getGlobalMesgNum(t reflect.Type) MesgNum {
@@ -1333,6 +1339,7 @@ var newMesgFuncs = [...]newMesgFunc{
 	MesgNumExdDataConceptConfiguration: func() reflect.Value { return reflect.ValueOf(NewExdDataConceptConfigurationMsg()) },
 	MesgNumDiveSummary:                 func() reflect.Value { return reflect.ValueOf(NewDiveSummaryMsg()) },
 	MesgNumHrv:                         func() reflect.Value { return reflect.ValueOf(NewHrvMsg()) },
+	MesgNumSleepEvent:                  func() reflect.Value { return reflect.ValueOf(NewSleepEventMsg()) },
 }
 
 func getMesgAllInvalid(mn MesgNum) reflect.Value {

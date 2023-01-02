@@ -51,6 +51,7 @@ type File struct {
 	monitoringB     *MonitoringBFile
 	segment         *SegmentFile
 	segmentList     *SegmentListFile
+	sleep           *SleepFile
 }
 
 type msgAdder interface {
@@ -140,6 +141,9 @@ func (f *File) init() error {
 	case FileTypeSegmentList:
 		f.segmentList = new(SegmentListFile)
 		f.msgAdder = f.segmentList
+	case FileTypeSleep:
+		f.sleep = new(SleepFile)
+		f.msgAdder = f.sleep
 	case FileTypeInvalid:
 		return FormatError("file type was set invalid")
 	default:
@@ -323,4 +327,13 @@ func (f *File) SegmentList() (*SegmentListFile, error) {
 		return nil, wrongFileTypeError{f.FileId.Type, FileTypeSegmentList}
 	}
 	return f.segmentList, nil
+}
+
+// Sleep returns f's Sleep file. An error is returned if the FIT file is
+// not of type sleep.
+func (f *File) Sleep() (*SleepFile, error) {
+	if !(f.FileId.Type == FileTypeSleep) {
+		return nil, wrongFileTypeError{f.FileId.Type, FileTypeSleep}
+	}
+	return f.sleep, nil
 }

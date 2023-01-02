@@ -1434,6 +1434,7 @@ const (
 	FileTypeSegment          FileType = 34   // Read/write/erase. Multiple Files. Directory=Segments
 	FileTypeSegmentList      FileType = 35   // Read/write/erase. Single File. Directory=Segments
 	FileTypeExdConfiguration FileType = 40   // Read/write/erase. Single File. Directory=Settings
+	FileTypeSleep            FileType = 49   // Read/write/erase. Multiple files. Directory=Sleep
 	FileTypeMfgRangeMin      FileType = 0xF7 // 0xF7 - 0xFE reserved for manufacturer specific file types
 	FileTypeMfgRangeMax      FileType = 0xFE // 0xF7 - 0xFE reserved for manufacturer specific file types
 	FileTypeInvalid          FileType = 0xFF

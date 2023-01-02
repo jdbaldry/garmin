@@ -5447,3 +5447,18 @@ func (x *HrvMsg) GetTimeScaled() []float64 {
 	}
 	return s
 }
+
+// SleepEventMsg represents the sleep_event FIT message type.
+type SleepEventMsg struct {
+	EndTimestamp time.Time // End timestamp of sleep activity level
+	SleepLevel   uint8     // 0: Unmeasurable, 1: Awake, 2: Light, 3: Deep, 4: REM
+}
+
+// NewSleepEventMsg returns a sleep_event FIT message
+// initialized to all-invalid values.
+func NewSleepEventMsg() *SleepEventMsg {
+	return &SleepEventMsg{
+		EndTimestamp: timeBase,
+		SleepLevel:   0xFF,
+	}
+}

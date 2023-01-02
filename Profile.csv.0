@@ -18,6 +18,7 @@ file,enum,,,
 ,,segment,34,"Read/write/erase. Multiple Files. Directory=Segments"
 ,,segment_list,35,"Read/write/erase. Single File. Directory=Segments"
 ,,exd_configuration,40,"Read/write/erase. Single File. Directory=Settings"
+,,sleep,49,"Read/write/erase. Multiple files. Directory=Sleep"
 ,,mfg_range_min,0xF7,"0xF7 - 0xFE reserved for manufacturer specific file types"
 ,,mfg_range_max,0xFE,"0xF7 - 0xFE reserved for manufacturer specific file types"
 mesg_num,uint16,,,
