@@ -113,7 +113,7 @@ type MonitoringAFile struct {
 type SleepFile struct {
 	DeviceInfos []*DeviceInfoMsg
 	Events      []*EventMsg
-	SleepEvents []*SleepEventMsg
+	SleepLevels []*SleepLevelMsg
 }
 
 // ActivitySummaryFile represents the Activity Summary FIT file type.
@@ -339,8 +339,8 @@ func (s *SleepFile) add(msg reflect.Value) {
 	switch tmp := x.(type) {
 	case EventMsg:
 		s.Events = append(s.Events, &tmp)
-	case SleepEventMsg:
-		s.SleepEvents = append(s.SleepEvents, &tmp)
+	case SleepLevelMsg:
+		s.SleepLevels = append(s.SleepLevels, &tmp)
 	case DeviceInfoMsg:
 		s.DeviceInfos = append(s.DeviceInfos, &tmp)
 	default:

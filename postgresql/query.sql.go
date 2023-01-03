@@ -507,7 +507,8 @@ VALUES
   (1, 'Awake'),
   (2, 'Light'),
   (3, 'Deep'),
-  (4, 'REM')
+  (4, 'REM'),
+  (255, 'INVALID')
 ON CONFLICT DO NOTHING
 `
 

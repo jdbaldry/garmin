@@ -1132,7 +1132,7 @@ var _fields = [...][256]*field{
 		0: {0, 0, types.Fit(36), 1},
 	},
 
-	MesgNumSleepEvent: {
+	MesgNumSleepLevel: {
 		0: {0, 0, types.Fit(70), 1},
 		1: {1, 1, types.Fit(0), 1},
 	},
@@ -1238,7 +1238,7 @@ var msgsTypes = [...]reflect.Type{
 	MesgNumExdDataConceptConfiguration: reflect.TypeOf(ExdDataConceptConfigurationMsg{}),
 	MesgNumDiveSummary:                 reflect.TypeOf(DiveSummaryMsg{}),
 	MesgNumHrv:                         reflect.TypeOf(HrvMsg{}),
-	MesgNumSleepEvent:                  reflect.TypeOf(SleepEventMsg{}),
+	MesgNumSleepLevel:                  reflect.TypeOf(SleepLevelMsg{}),
 }
 
 func getGlobalMesgNum(t reflect.Type) MesgNum {
@@ -1341,7 +1341,7 @@ var newMesgFuncs = [...]newMesgFunc{
 	MesgNumExdDataConceptConfiguration: func() reflect.Value { return reflect.ValueOf(NewExdDataConceptConfigurationMsg()) },
 	MesgNumDiveSummary:                 func() reflect.Value { return reflect.ValueOf(NewDiveSummaryMsg()) },
 	MesgNumHrv:                         func() reflect.Value { return reflect.ValueOf(NewHrvMsg()) },
-	MesgNumSleepEvent:                  func() reflect.Value { return reflect.ValueOf(NewSleepEventMsg()) },
+	MesgNumSleepLevel:                  func() reflect.Value { return reflect.ValueOf(NewSleepLevelMsg()) },
 }
 
 func getMesgAllInvalid(mn MesgNum) reflect.Value {

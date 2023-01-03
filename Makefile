@@ -11,7 +11,7 @@ help: ## Display this help.
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-45s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-GO_FILES := main.go activity.go ingest.go sleep.go
+GO_FILES := $(wildcard *.go)
 
 .PHONY: fmt
 fmt: ## Format all code.
@@ -99,19 +99,13 @@ FitCSVTool.jar: FitSDKRelease_$(RELEASE).zip
 %.fit: %.FIT
 	mv $< $@
 
-.PHONY: sleep
-sleep: ## Convert all sleep Fit files into CSV files.
-sleep: FitCSVTool.jar
-	$(MAKE) $(patsubst %.fit,%.csv,$(wildcard fit/Primary/GARMIN/Sleep/*))
-
 .PHONY: ingest
 ingest: ## Ingest rsync'd data.
-ingest: generate sleep
+ingest: generate
 	go run ./
 
 vendor: ## Update vendored Go source code.
-vendor: PersonalProfile.xlsx go.mod go.sum
-	go mod tidy && go mod vendor
+vendor: PersonalProfile.xlsx
 	fitgen -hrst -verbose -sdk $(RELEASE)-Personal $< $@/github.com/tormoder/fit
 
 Profile.csv.0 Profile.csv.1: ## Convert profile into CSV for editing.
