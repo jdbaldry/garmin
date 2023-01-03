@@ -50,19 +50,20 @@ func ingestSleep(ctx context.Context, queries *postgresql.Queries, data *fit.Fil
 
 	start := params.StartTs.Time
 
-	fmt.Printf("%#v\n", sleepFile)
-	for _, level := range sleepFile.SleepLevels {
-		params := createSleepRecordParams(level, id, start)
-		log.Infof("Creating sleep record with params: %+v", params)
+	if id != 0 {
+		for _, level := range sleepFile.SleepLevels {
+			params := createSleepRecordParams(level, id, start)
+			log.Infof("Creating sleep record with params: %+v", params)
 
-		_, err := queries.CreateSleepRecord(ctx, params)
-		if err != nil {
-			if !errors.Is(err, sql.ErrNoRows) {
-				return fmt.Errorf("failed to create sleep record: %w", err)
+			_, err := queries.CreateSleepRecord(ctx, params)
+			if err != nil {
+				if !errors.Is(err, sql.ErrNoRows) {
+					return fmt.Errorf("failed to create sleep record: %w", err)
+				}
 			}
-		}
 
-		start = params.EndTs.Time
+			start = params.EndTs.Time
+		}
 	}
 
 	return nil

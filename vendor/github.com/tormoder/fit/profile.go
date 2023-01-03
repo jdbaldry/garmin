@@ -1133,8 +1133,8 @@ var _fields = [...][256]*field{
 	},
 
 	MesgNumSleepLevel: {
-		0: {0, 0, types.Fit(70), 1},
-		1: {1, 1, types.Fit(0), 1},
+		253: {0, 253, types.Fit(70), 1},
+		0:   {1, 0, types.Fit(0), 1},
 	},
 }
 
