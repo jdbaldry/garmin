@@ -304,7 +304,8 @@ VALUES
   (11, '9wmcqhpVk', 'walking'),
   (17, 'gotNq2pVz', 'hiking'),
   (31, 'MfI_jhp4k', 'rock-climbing'),
-  (41, 'Y0hvq2p4z', 'kayaking')
+  (41, 'Y0hvq2p4z', 'kayaking'),
+  (7, 'nRLFvfp4z', 'soccer')
 ON CONFLICT DO NOTHING;
 
 -- name: CreateStressLevel :one
@@ -316,5 +317,20 @@ RETURNING id;
 -- name: CreateHeartRate :one
 INSERT INTO heart_rates (ts, value)
 VALUES ($1, $2)
+ON CONFLICT DO NOTHING
+RETURNING id;
+
+-- name: CreateStep :one
+INSERT INTO steps (
+  ts,
+  distance,
+  cycles,
+  active_time,
+  active_calories,
+  duration_min,
+  activity_type,
+  activity_sub_type
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 ON CONFLICT DO NOTHING
 RETURNING id;

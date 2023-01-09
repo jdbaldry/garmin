@@ -59,7 +59,9 @@ rsync: ## Rsync Garmin FIT files to $(FIT_DIR).
 rsync: $(FIT_DIR)/Primary/GARMIN/Activity
 	rsync -aRv \
 		$(MOUNT_DIR)/./Primary/GARMIN/Activity \
+		$(MOUNT_DIR)/./Primary/GARMIN/Metrics \
 		$(MOUNT_DIR)/./Primary/GARMIN/Monitor \
+		$(MOUNT_DIR)/./Primary/GARMIN/Records \
 		$(MOUNT_DIR)/./Primary/GARMIN/Sleep \
 		$(CURDIR)/$(FIT_DIR)
 

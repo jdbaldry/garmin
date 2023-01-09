@@ -153,14 +153,22 @@ type Sport struct {
 }
 
 type Step struct {
-	ID             int64
-	Ts             sql.NullTime
-	Distance       sql.NullFloat64
-	Cycles         sql.NullInt32
-	ActiveTime     sql.NullInt32
-	ActiveCalories sql.NullInt32
-	DurationMin    sql.NullInt16
-	ActivityType   sql.NullInt16
+	ID              int64
+	Ts              sql.NullTime
+	Distance        sql.NullFloat64
+	Cycles          sql.NullFloat64
+	ActiveTime      sql.NullFloat64
+	ActiveCalories  sql.NullInt32
+	DurationMin     sql.NullInt16
+	ActivityType    sql.NullInt16
+	ActivitySubType sql.NullInt16
+}
+
+type StepsDaily struct {
+	Day          int32
+	Cycles       interface{}
+	Distance     interface{}
+	ActivityType sql.NullInt16
 }
 
 type StressLevel struct {

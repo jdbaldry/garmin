@@ -33,6 +33,12 @@ func main() {
 
 	queries := postgresql.New(db)
 
+	log.Infoln("Ingesting steps")
+
+	if err := ingestSteps(ctx, queries); err != nil {
+		log.Fatalln(err)
+	}
+
 	if !*sleeps {
 		log.Infoln("Populating sports")
 

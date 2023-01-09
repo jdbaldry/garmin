@@ -166,3 +166,21 @@ CREATE TABLE IF NOT EXISTS heart_rates (
   value smallint
 );
 
+CREATE TABLE IF NOT EXISTS steps (
+  id bigserial PRIMARY KEY,
+  ts timestamp,
+  distance double precision, -- double precision is used because the scaled values returns a float64
+  cycles double precision, -- double precision is used because the scaled values returns a float64
+  active_time double precision, -- double precision is used because the scaled values returns a float64
+  active_calories integer,
+  duration_min smallint,
+  activity_type smallint,
+  activity_sub_type smallint,
+  UNIQUE (ts, activity_type, activity_sub_type)
+);
+
+CREATE OR REPLACE VIEW steps_daily AS
+SELECT date_trunc('day', ts) + interval '23 hours' AS day, MAX(s.cycles) AS cycles, MAX(s.distance) AS distance, activity_type
+FROM steps AS s
+WHERE activity_type = 6 OR activity_type = 1
+GROUP BY day, activity_type ORDER BY day;

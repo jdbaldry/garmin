@@ -406,6 +406,49 @@ func (q *Queries) CreateSleepRecord(ctx context.Context, arg CreateSleepRecordPa
 	return id, err
 }
 
+const createStep = `-- name: CreateStep :one
+INSERT INTO steps (
+  ts,
+  distance,
+  cycles,
+  active_time,
+  active_calories,
+  duration_min,
+  activity_type,
+  activity_sub_type
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+ON CONFLICT DO NOTHING
+RETURNING id
+`
+
+type CreateStepParams struct {
+	Ts              sql.NullTime
+	Distance        sql.NullFloat64
+	Cycles          sql.NullFloat64
+	ActiveTime      sql.NullFloat64
+	ActiveCalories  sql.NullInt32
+	DurationMin     sql.NullInt16
+	ActivityType    sql.NullInt16
+	ActivitySubType sql.NullInt16
+}
+
+func (q *Queries) CreateStep(ctx context.Context, arg CreateStepParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, createStep,
+		arg.Ts,
+		arg.Distance,
+		arg.Cycles,
+		arg.ActiveTime,
+		arg.ActiveCalories,
+		arg.DurationMin,
+		arg.ActivityType,
+		arg.ActivitySubType,
+	)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const createStressLevel = `-- name: CreateStressLevel :one
 INSERT INTO stress_levels (ts, value)
 VALUES ($1, $2)
@@ -477,7 +520,8 @@ VALUES
   (11, '9wmcqhpVk', 'walking'),
   (17, 'gotNq2pVz', 'hiking'),
   (31, 'MfI_jhp4k', 'rock-climbing'),
-  (41, 'Y0hvq2p4z', 'kayaking')
+  (41, 'Y0hvq2p4z', 'kayaking'),
+  (7, 'nRLFvfp4z', 'soccer')
 ON CONFLICT DO NOTHING
 `
 
